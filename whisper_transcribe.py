@@ -1,9 +1,7 @@
 from openai import OpenAI
+from openai_client import openai_client
 
-# OpenAI Client Setup
-client = OpenAI(
-    api_key="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",
-)
+client = openai_client
 
 ## TODO
   # 1. Get PyDub to break down the audio file into 10 minute chunks

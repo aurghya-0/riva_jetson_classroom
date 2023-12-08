@@ -1,13 +1,12 @@
 import os
 from openai import OpenAI
+from openai_client import openai_client
 
 # Debug mode
 DEBUG_MODE = False
 
 # OpenAI Client Setup
-client = OpenAI(
-    api_key="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",
-)
+client = openai_client
 
 # Open or create the file for reading the transcript 
 with open("read.txt", encoding="utf8") as file:
