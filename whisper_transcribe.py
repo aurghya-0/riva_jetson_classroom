@@ -15,5 +15,8 @@ transcript = client.audio.transcriptions.create(
   response_format="text"
 )
 
+with open("transcript.txt", "w") as file:
+    file.write(transcript)
+
 # print the transcript
 print(transcript)
