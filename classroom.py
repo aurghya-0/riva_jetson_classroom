@@ -10,6 +10,7 @@ from class_notes import ClassNote
 # - Add a way to get the class duration from the user
 # - Add a way to get the class name from the user
 # - Organize the files into folders
+# - Move everything to a database based system
 
 class Classroom:
     def __init__(self, class_name, class_duration=10):
