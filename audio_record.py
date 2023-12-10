@@ -6,7 +6,7 @@ class AudioRecord:
                  chunk=1024, 
                  sample_format=pyaudio.paInt16, 
                  channels=2, fs=44100, 
-                 seconds=15, 
+                 seconds=10, 
                  filename="output.wav"):
         self.chunk = chunk
         self.sample_format = sample_format
@@ -37,13 +37,11 @@ class AudioRecord:
         p.terminate()
 
         print("Finished recording.")
-        self.save(self, p, frames)
-
-    # Save the recorded data as a WAV file
-    def save(self, p, frames):
         wf = wave.open(self.filename, "wb")
         wf.setnchannels(self.channels)
         wf.setsampwidth(p.get_sample_size(self.sample_format))
         wf.setframerate(self.fs)
         wf.writeframes(b"".join(frames))
         wf.close()
+
+        

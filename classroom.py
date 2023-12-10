@@ -5,7 +5,7 @@ from whisper_transcribe import Transcribe
 from datetime import datetime
 
 class Classroom:
-    def __init__(self, openai_client, class_name):
+    def __init__(self, class_name):
         self.client = OpenAI(api_key=OpenAIKey.key)
         self.DEBUG = False
         now = datetime.now()
