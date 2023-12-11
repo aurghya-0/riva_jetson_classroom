@@ -6,7 +6,7 @@ from datetime import datetime
 from class_notes import ClassNote
 import os
 
-## TODO
+
 # - Add a debug mode
 # - Add a way to get the class duration from the user
 # - Add a way to get the class name from the user
@@ -14,7 +14,7 @@ import os
 # - Move everything to a database based system
 
 class Classroom:
-    def __init__(self, class_name, class_duration=10, subject = "HPC"):
+    def __init__(self, class_name, class_duration=10, subject="HPC"):
         self.client = OpenAI(api_key=OpenAIKey.key)
         self.DEBUG = False
         now = datetime.now()
@@ -22,18 +22,18 @@ class Classroom:
         self.class_duration = class_duration
         self.subject = subject
         self.date = datetime.now().strftime("%d-/%m-/%Y")
-        
+
         self.output_path = f"{self.subject}/{self.date}"
 
         if not os.path.exists(self.output_path):
             os.makedirs(self.output_path)
-        
+
         self.filename = f"{self.output_path}/{self.filename}"
-        
-    
+        self.cn = ClassNote(openai_client=self.client, filename=self.filename, subject=self.subject)
+
     def record_class(self):
         r = AudioRecord(
-            filename=f"{self.filename}.wav", 
+            filename=f"{self.filename}.wav",
             seconds=self.class_duration)
         r.record()
 
@@ -42,7 +42,6 @@ class Classroom:
         t.create_transcript(filename=self.filename)
 
     def summarize(self):
-        self.cn = ClassNote(openai_client=self.client, filename=self.filename, subject=self.subject)
         self.cn.summarize()
 
     def create_class_notes(self):
