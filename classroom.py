@@ -14,6 +14,8 @@ import os
 # - Move everything to a database based system
 
 class Classroom:
+    """Main class implementing the functionalities of classroom recording, transcribing,
+    summarizing and then generating the notes for the topics"""
     def __init__(self, class_name, class_duration=10, subject="HPC"):
         self.client = OpenAI(api_key=OpenAIKey.key)
         self.DEBUG = False
