@@ -163,3 +163,5 @@ openai_client.py
 *.mp3
 *.wav
 *.txt
+.vscode/
+.idea/
