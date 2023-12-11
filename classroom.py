@@ -4,6 +4,7 @@ from audio_record import AudioRecord
 from whisper_transcribe import Transcribe
 from datetime import datetime
 from class_notes import ClassNote
+import os
 
 ## TODO
 # - Add a debug mode
@@ -13,12 +14,22 @@ from class_notes import ClassNote
 # - Move everything to a database based system
 
 class Classroom:
-    def __init__(self, class_name, class_duration=10):
+    def __init__(self, class_name, class_duration=10, subject = "HPC"):
         self.client = OpenAI(api_key=OpenAIKey.key)
         self.DEBUG = False
         now = datetime.now()
         self.filename = now.strftime(f"%d-%m-%Y-%H-%M-%S - {class_name}")
         self.class_duration = class_duration
+        self.subject = subject
+        self.date = datetime.now().strftime("%d-/%m-/%Y")
+        
+        self.output_path = f"{self.subject}/{self.date}"
+
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
+        
+        self.filename = f"{self.output_path}/{self.filename}"
+        
     
     def record_class(self):
         r = AudioRecord(
@@ -31,7 +42,7 @@ class Classroom:
         t.create_transcript(filename=self.filename)
 
     def summarize(self):
-        self.cn = ClassNote(self.client, self.filename)
+        self.cn = ClassNote(openai_client=self.client, filename=self.filename, subject=self.subject)
         self.cn.summarize()
 
     def create_class_notes(self):

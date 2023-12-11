@@ -1,7 +1,11 @@
+from datetime import datetime
+
 class ClassNote:
-    def __init__(self, openai_client, filename):
-        self.filename = filename
+    def __init__(self, openai_client, filename, subject):
         self.client = openai_client
+        self.subject = subject
+        self.filename = filename
+        
 
     def summarize(self):
         with open(f"{self.filename}.txt", encoding="utf8") as file:
