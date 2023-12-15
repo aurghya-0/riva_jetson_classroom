@@ -1,29 +1,25 @@
 from datetime import datetime
 
+
 class ClassNote:
     def __init__(self, openai_client, filename, subject):
         self.client = openai_client
         self.subject = subject
         self.filename = filename
-        
 
-    def summarize(self):
-        with open(f"{self.filename}.txt", encoding="utf8") as file:
-            chat_content = file.read()
-
+    def summarize(self, transcription):
         # Create a chat completion and output the result to a file
         chat_completion = self.client.chat.completions.create(
             messages=[
                 {
                     "role": "user",
-                    "content": "Get the important topics from the following lecture and list them \n "+chat_content,
+                    "content": "Get the important topics from the following lecture and list them \n " + transcription,
                 }
             ],
             model="gpt-3.5-turbo",
         )
 
-        with open (f"{self.filename} - Summary.txt", "w", encoding="utf8") as output:
-            output.write(chat_completion.choices[0].message.content)
+        return chat_completion.choices[0].message.content
 
     def create_class_note(self, chat_content):
         chat_completion = self.client.chat.completions.create(

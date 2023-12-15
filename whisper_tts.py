@@ -1,9 +1,9 @@
 from pathlib import Path
 from openai import OpenAI
-from openai_client import openai_client
+from openai_client import OpenAIKey
 
 # OpenAI Client Setup
-client = openai_client
+client = OpenAI(api_key=OpenAIKey.key)
 
 # Open or create the file for reading the transcript 
 with open("text.txt", encoding="utf8") as file:

@@ -1,3 +1,5 @@
 openai
 pyaudio
 wave
+pymongo[srv]
+python-dateutil

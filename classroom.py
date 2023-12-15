@@ -4,6 +4,8 @@ from audio_record import AudioRecord
 from whisper_transcribe import Transcribe
 from datetime import datetime
 from class_notes import ClassNote
+from mongodb_config import get_database
+from dateutil import parser
 import os
 
 
@@ -16,21 +18,20 @@ import os
 class Classroom:
     """Main class implementing the functionalities of classroom recording, transcribing,
     summarizing and then generating the notes for the topics"""
+
     def __init__(self, class_name, class_duration=10, subject="HPC"):
+        self.transcript = None
         self.client = OpenAI(api_key=OpenAIKey.key)
         self.DEBUG = False
-        now = datetime.now()
-        self.filename = now.strftime(f"%d-%m-%Y-%H-%M-%S - {class_name}")
+        self.now = datetime.now()
+        self.filename = self.now.strftime(f"%d-%m-%Y-%H-%M-%S - {class_name}")
+        self.class_name = class_name
         self.class_duration = class_duration
         self.subject = subject
-        self.date = datetime.now().strftime("%d-/%m-/%Y")
+        self.db = get_database()
+        self.collection = self.db["transcriptions"]
+        self.id = "random"
 
-        self.output_path = f"{self.subject}/{self.date}"
-
-        if not os.path.exists(self.output_path):
-            os.makedirs(self.output_path)
-
-        self.filename = f"{self.output_path}/{self.filename}"
         self.cn = ClassNote(openai_client=self.client, filename=self.filename, subject=self.subject)
 
     def record_class(self):
@@ -40,13 +41,26 @@ class Classroom:
         r.record()
 
     def transcribe(self):
-        t = Transcribe(self.client, f"{self.filename}.wav")
-        t.create_transcript(filename=self.filename)
+        # t = Transcribe(self.client, f"{self.filename}.wav")
+        with open("text.txt", "r") as file:
+            self.transcript = file.read()
+        # transcript = t.create_transcript(filename=self.filename)
+        transcript_item = {
+            "transcript": self.transcript,
+            "subject": self.subject,
+            "class_name": self.class_name
+        }
+        result = self.collection.insert_one(transcript_item)
+        self.id = result.inserted_id
 
     def summarize(self):
-        self.cn.summarize()
+        summarization = self.cn.summarize(self.transcript)
+        db_entry = self.collection.find_one(self.id)
+        print(db_entry)
+        self.collection.update_one({"_id": self.id}, {"$set": {"summary": summarization}})
 
     def create_class_notes(self):
+        # TODO : Create a channel from summarize to create class notes
         self.cn.create_notes_collection()
 
     def debug(self):
