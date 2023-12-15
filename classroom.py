@@ -8,11 +8,6 @@ from mongodb_config import get_database
 import os
 
 
-# - Add a way to get the class duration from the user
-# - Add a way to get the class name from the user
-# - Organize the files into folders
-# - Move everything to a database based system
-
 class Classroom:
     """Main class implementing the functionalities of classroom recording, 
     transcribing, summarizing and then generating the notes for the topics"""
@@ -41,7 +36,7 @@ class Classroom:
 
         # DEBUG BLOCK
         # with open("text.txt", "r") as file:
-        #     self.transcript = file.read()
+        #     transcript = file.read()
 
         t = Transcribe(self.client, f"{self.filename}.wav")
         transcript = t.create_transcript(filename=self.filename)        

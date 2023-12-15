@@ -9,6 +9,7 @@ class ClassNote:
 
     def summarize(self, transcription):
         # Create a chat completion and output the result to a file
+        print("> Summarizing the transcription....")
         chat_completion = self.client.chat.completions.create(
             messages=[
                 {
@@ -18,19 +19,24 @@ class ClassNote:
             ],
             model="gpt-3.5-turbo",
         )
+        print("> Summarizing complete....")
+        print(chat_completion.choices[0].message.content)
 
         return chat_completion.choices[0].message.content
 
     def create_class_note(self, chat_content):
+        print(f">> Creating class notes for {chat_content}....")
         chat_completion = self.client.chat.completions.create(
             messages=[
                 {
                     "role": "user",
-                    "content": f"Make a detailed university level class note with sufficient explanations and sample questions on the topic of {chat_content}",
+                    "content": f"Make a detailed university level class note with detailed explanations, equations (if applicable), and examples on the topic of {chat_content}, and format it with markdown.",
                 }
             ],
             model="gpt-3.5-turbo",
         )
+
+        print(f">>> Class notes for {chat_content} created....")
 
         return chat_completion.choices[0].message.content
 

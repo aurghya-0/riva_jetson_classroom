@@ -2,7 +2,7 @@ from pymongo import MongoClient
 
 
 def get_database():
-    CONNECTION_STRING = "mongodb+srv://aurghyadip:aurghya@whispertranscriptions.lmeavmb.mongodb.net/?retryWrites=true&w=majority"
+    CONNECTION_STRING = "mongodb://127.0.0.1:27017/classroom"
     client = MongoClient(CONNECTION_STRING)
     return client['transcriptionList']
 

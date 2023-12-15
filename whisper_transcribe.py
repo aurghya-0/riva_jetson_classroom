@@ -10,6 +10,7 @@ class Transcribe:
         self.DEBUG = False
 
     def create_transcript(self, filename):
+        print("> Creating transcript....")
         self.transcript = self.client.audio.transcriptions.create(
             model="whisper-1",
             file=self.audio_file,
@@ -18,7 +19,8 @@ class Transcribe:
 
         if self.DEBUG:
             self.debug()
-
+        
+        print("> Transcript created....")
         return self.transcript
 
     def debug(self):
