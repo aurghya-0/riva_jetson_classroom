@@ -34,13 +34,10 @@ class ClassNote:
 
         return chat_completion.choices[0].message.content
 
-    def create_notes_collection(self):
-        with open(f"{self.filename} - Summary.txt", "r", encoding="utf8") as input:
-            topics = input.readlines()
-
+    def create_notes_collection(self, topics):
+        class_notes = []
         for topic in topics:
             class_note = self.create_class_note(topic)
-
-            with open(f"{self.filename} - Class Notes.txt", "a+", encoding="utf8") as final_output:
-                final_output.write(class_note.choices[0].message.content)
-                final_output.write("\n\n")
+            class_notes.append(class_note)
+        
+        return class_notes
