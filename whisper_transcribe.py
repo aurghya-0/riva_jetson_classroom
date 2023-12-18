@@ -1,8 +1,4 @@
 from custom_logger import getLogger
-## TODO
-# 1. Get PyDub to break down the audio file into 10 minute chunks
-# 2. Get the transcript for each chunk
-# 3. Write the transcript to a file
 
 class Transcribe:
     """
